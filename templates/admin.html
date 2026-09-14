@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - ShopNest{% endblock %}
+{% block content %}
+<h1>Admin Dashboard</h1>
+<div class="two-column">
+<section class="form-card">
+    <h2>Add Product</h2>
+    <form method="post" action="{{ url_for('add_product') }}">
+        <label>Name</label><input name="name" required>
+        <label>Description</label><textarea name="description" required></textarea>
+        <label>Price</label><input type="number" name="price" min="0" step="0.01" required>
+        <label>Category</label><input name="category" required>
+        <label>Emoji</label><input name="emoji" value="🛍️">
+        <label>Stock</label><input type="number" name="stock" min="0" required>
+        <button class="btn full">Add Product</button>
+    </form>
+</section>
+<section>
+    <h2>Products</h2>
+    <div class="admin-list">
+    {% for product in products %}
+        <div class="mini-row"><span>{{ product['emoji'] }} {{ product['name'] }}</span><strong>₹{{ product['price'] }}</strong></div>
+    {% endfor %}
+    </div>
+</section>
+</div>
+
+<h2>Manage Orders</h2>
+<table class="data-table">
+<tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th><th>Update</th></tr>
+{% for order in orders %}
+<tr>
+    <td>#{{ order['id'] }}</td>
+    <td>{{ order['email'] }}</td>
+    <td>₹{{ "%.2f"|format(order['total']) }}</td>
+    <td>{{ order['status'] }}</td>
+    <td>
+        <form method="post" action="{{ url_for('update_order_status', order_id=order['id']) }}" class="inline-form">
+            <select name="status">
+                {% for status in ['Placed','Packed','Shipped','Delivered','Cancelled'] %}
+                    <option {% if order['status'] == status %}selected{% endif %}>{{ status }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn small">Save</button>
+        </form>
+    </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

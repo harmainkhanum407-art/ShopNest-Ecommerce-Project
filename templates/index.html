@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}ShopNest - Home{% endblock %}
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">WELCOME TO SHOPNEST</p>
+        <h1>Everything you need, in one place.</h1>
+        <p>Explore useful products, add them to your cart and track your orders easily.</p>
+        <a href="#products" class="btn">Explore Products</a>
+    </div>
+    <div class="hero-art">🛍️</div>
+</section>
+
+<section class="toolbar">
+    <form method="get" class="search-form">
+        <input type="text" name="search" value="{{ search }}" placeholder="Search products...">
+        <button class="btn" type="submit">Search</button>
+    </form>
+    <div class="categories">
+        <a class="{% if not selected_category %}active{% endif %}" href="{{ url_for('home') }}">All</a>
+        {% for category in categories %}
+            <a class="{% if selected_category == category['category'] %}active{% endif %}" href="{{ url_for('home', category=category['category']) }}">{{ category['category'] }}</a>
+        {% endfor %}
+    </div>
+</section>
+
+<h2 id="products">Featured Products</h2>
+<div class="product-grid">
+{% for product in products %}
+    <article class="product-card">
+        <div class="product-emoji">{{ product['emoji'] }}</div>
+        <span class="tag">{{ product['category'] }}</span>
+        <h3>{{ product['name'] }}</h3>
+        <p>{{ product['description'] }}</p>
+        <div class="product-bottom">
+            <strong>₹{{ "%.2f"|format(product['price']) }}</strong>
+            <span class="stock">{{ product['stock'] }} left</span>
+        </div>
+        <form method="post" action="{{ url_for('add_to_cart', product_id=product['id']) }}">
+            <button class="btn full" {% if product['stock'] == 0 %}disabled{% endif %}>Add to Cart</button>
+        </form>
+    </article>
+{% else %}
+    <p>No products found.</p>
+{% endfor %}
+</div>
+{% endblock %}

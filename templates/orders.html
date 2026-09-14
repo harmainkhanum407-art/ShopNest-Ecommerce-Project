@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}My Orders - ShopNest{% endblock %}
+{% block content %}
+<h1>Order Tracking</h1>
+{% if orders %}
+<div class="order-list">
+{% for order in orders %}
+    <article class="order-card">
+        <div>
+            <h3>Order #{{ order['id'] }}</h3>
+            <p class="muted">{{ order['created_at'] }}</p>
+            <p>{{ order['address'] }}</p>
+        </div>
+        <div class="order-right">
+            <strong>₹{{ "%.2f"|format(order['total']) }}</strong>
+            <span class="status {{ order['status']|lower }}">{{ order['status'] }}</span>
+        </div>
+    </article>
+{% endfor %}
+</div>
+{% else %}
+<p>You have not placed any orders yet.</p>
+{% endif %}
+{% endblock %}

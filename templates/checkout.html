@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Checkout - ShopNest{% endblock %}
+{% block content %}
+<div class="two-column">
+<section class="form-card">
+    <h1>Checkout</h1>
+    <form method="post">
+        <label>Customer Name</label>
+        <input type="text" name="customer_name" required>
+        <label>Delivery Address</label>
+        <textarea name="address" rows="5" required></textarea>
+        <button class="btn full">Place Order</button>
+    </form>
+</section>
+<section class="summary-card">
+    <h2>Order Summary</h2>
+    {% for product, quantity, subtotal in items %}
+        <p>{{ product['name'] }} × {{ quantity }} <strong>₹{{ "%.2f"|format(subtotal) }}</strong></p>
+    {% endfor %}
+    <hr>
+    <h2>Total: ₹{{ "%.2f"|format(total) }}</h2>
+</section>
+</div>
+{% endblock %}

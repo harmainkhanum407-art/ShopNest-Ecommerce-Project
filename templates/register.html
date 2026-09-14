@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Register - ShopNest{% endblock %}
+{% block content %}
+<div class="form-card">
+    <h1>Create Account</h1>
+    <p>Register to place and track orders.</p>
+    <form method="post">
+        <label>Full Name</label>
+        <input type="text" name="name" required>
+        <label>Email</label>
+        <input type="email" name="email" required>
+        <label>Password</label>
+        <input type="password" name="password" minlength="6" required>
+        <button class="btn full">Register</button>
+    </form>
+</div>
+{% endblock %}

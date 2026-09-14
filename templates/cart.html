@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Cart - ShopNest{% endblock %}
+{% block content %}
+<h1>Your Shopping Cart</h1>
+{% if items %}
+<form method="post" action="{{ url_for('update_cart') }}">
+<table class="data-table">
+    <tr><th>Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th></tr>
+    {% for item in items %}
+    <tr>
+        <td>{{ item.product['emoji'] }} {{ item.product['name'] }}</td>
+        <td>₹{{ "%.2f"|format(item.product['price']) }}</td>
+        <td><input class="quantity" type="number" min="0" name="quantity_{{ item.product['id'] }}" value="{{ item.quantity }}"></td>
+        <td>₹{{ "%.2f"|format(item.subtotal) }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<div class="cart-summary">
+    <h2>Total: ₹{{ "%.2f"|format(total) }}</h2>
+    <button class="btn" type="submit">Update Cart</button>
+    <a class="btn secondary" href="{{ url_for('checkout') }}">Proceed to Checkout</a>
+</div>
+</form>
+{% else %}
+<div class="empty-state"><h2>Your cart is empty.</h2><a class="btn" href="{{ url_for('home') }}">Continue Shopping</a></div>
+{% endif %}
+{% endblock %}
